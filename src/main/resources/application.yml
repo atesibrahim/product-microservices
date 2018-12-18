@@ -1,0 +1,19 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/productdb
+    username: postgres
+    password: bright
+    initialization-mode: always
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
