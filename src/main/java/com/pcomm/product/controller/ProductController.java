@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/product")
 public class ProductController {
 
     private static final  Logger logger = Logger.getLogger(ProductController.class
@@ -30,7 +30,10 @@ public class ProductController {
     @GetMapping("list")
     public ResponseEntity<List<ProductDTO>> listAll() {
 
+        logger.log(Level.INFO,"product-service  list invoked:{0}" );
         Iterable<ProductDTO> productDTOs = productService.allProducts();
+
+        logger.log(Level.INFO,"product-service  list returned:{0}" );
 
         return new ResponseEntity<>(Lists.newArrayList(productDTOs), HttpStatus.OK);
 
@@ -100,7 +103,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("delete/{productId}")
+    @DeleteMapping("/delete/{productId}")
     public ResponseEntity<ProductDTO> deleteById(@PathVariable("productId") Long id){
         logger.log(Level.INFO,"product-service delete method will called for productId:{0} " , id);
         productService.deleteEntity(id);
