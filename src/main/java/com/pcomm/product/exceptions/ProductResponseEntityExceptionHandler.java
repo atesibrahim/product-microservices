@@ -1,6 +1,6 @@
-package com.pcomm.exceptions;
+package com.pcomm.product.exceptions;
 
-import com.pcomm.constant.ProductConstant;
+import com.pcomm.product.constant.ProductConstant;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

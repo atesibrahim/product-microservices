@@ -2,7 +2,7 @@ package com.pcomm.product.service.Impl;
 
 
 import com.google.common.collect.Lists;
-import com.pcomm.exceptions.ProductNotFoundExceptions;
+import com.pcomm.product.exceptions.ProductNotFoundExceptions;
 import com.pcomm.product.dto.ProductDTO;
 import com.pcomm.product.mapper.ProductMapper;
 import com.pcomm.product.model.Product;
@@ -15,9 +15,9 @@ import javax.transaction.Transactional;
 import java.security.InvalidParameterException;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -31,31 +31,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> findByProductTypeContainingIgnoreCase(String productType) {
-        List<Product> products = productRepository.findByProductTypeContaining(productType);
 
-        List<ProductDTO> productDTOS = new ArrayList<>();
+        return this.productRepository.findByProductTypeContaining(productType).parallelStream().map(pduct -> ProductMapper.convertToDTO(pduct)).collect(Collectors.toList());
 
-        for(Product p:products)
-        {
-            productDTOS.add(ProductMapper.convertToDTO(p));
-        }
-
-        return productDTOS;
     }
 
     @Override
     public List<ProductDTO> findByProductNameContainingIgnoreCase(String productName) {
 
-        List<Product> products = productRepository.findByProductNameContaining(productName);
+        return productRepository.findByProductNameContaining(productName).parallelStream().map(pduct -> ProductMapper.convertToDTO(pduct)).collect(Collectors.toList());
 
-        List<ProductDTO> productDTOS = new ArrayList<>();
-
-        for(Product p:products)
-        {
-            productDTOS.add(ProductMapper.convertToDTO(p));
-        }
-
-        return productDTOS;
     }
 
 
@@ -64,15 +49,9 @@ public class ProductServiceImpl implements ProductService {
 
 
         List<Product> products = Lists.newArrayList(productRepository.findAll());
+        return products.parallelStream().map(pduct -> ProductMapper.convertToDTO(pduct)).collect(Collectors.toList());
 
-        List<ProductDTO> productDTOS = new ArrayList<>();
 
-        for(Product p:products)
-        {
-            productDTOS.add(ProductMapper.convertToDTO(p));
-        }
-
-        return productDTOS;
     }
 
     @Override

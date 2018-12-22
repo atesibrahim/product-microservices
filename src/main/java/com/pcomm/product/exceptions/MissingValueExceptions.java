@@ -1,4 +1,4 @@
-package com.pcomm.exceptions;
+package com.pcomm.product.exceptions;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 

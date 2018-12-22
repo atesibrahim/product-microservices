@@ -1,4 +1,4 @@
-package com.pcomm.exceptions;
+package com.pcomm.product.exceptions;
 
 import java.util.Date;
 
