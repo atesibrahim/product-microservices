@@ -100,8 +100,8 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("delete/{productId}")
-    public ResponseEntity<Product> deleteById(@PathVariable("productId") Long id){
+    @GetMapping("delete/{productId}")
+    public ResponseEntity<ProductDTO> deleteById(@PathVariable("productId") Long id){
         logger.log(Level.INFO,"product-service delete method will called for productId:{0} " , id);
         productService.deleteEntity(id);
         logger.log(Level.INFO,"product-service delete method called for productId:{0} " , id);
