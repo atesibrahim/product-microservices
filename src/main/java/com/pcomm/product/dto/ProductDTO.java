@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -17,8 +16,6 @@ public class ProductDTO {
     @NotNull
     protected String productName;
 
-    @NotNull
-    protected String productType;
 
     @NotNull
     protected Long categoryId;
@@ -33,9 +30,8 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(String productName, String productType, Long categoryId, Long brandId, String createUserId, String updateUserId) {
+    public ProductDTO(String productName, Long categoryId, Long brandId, String createUserId, String updateUserId) {
         this.productName = productName;
-        this.productType = productType;
         this.categoryId = categoryId;
         this.brandId = brandId;
         this.createUserId = createUserId;

@@ -1,6 +1,6 @@
-package com.pcomm.product.exceptions;
+package com.pcomm.brand.exceptions;
 
-import com.pcomm.constant.ProductConstant;
+import com.pcomm.constant.BrandConstant;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @ControllerAdvice
-public class ProductResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class BrandResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
@@ -31,8 +31,8 @@ public class ProductResponseEntityExceptionHandler extends ResponseEntityExcepti
 
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append("Validation Failed.");
-        if(result.getFieldError().getField().equals(ProductConstant.PRODUCT_ID)) {
-            errorMessage.append(" Product Id is not Valid");
+        if(result.getFieldError().getField().equals(BrandConstant.BRAND_ID)) {
+            errorMessage.append(" Brand Id is not Valid");
         }else {
             errorMessage.append(" Please send all required fields");
         }
@@ -43,9 +43,9 @@ public class ProductResponseEntityExceptionHandler extends ResponseEntityExcepti
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ProductNotFoundExceptions.class)
-    public final ResponseEntity<ExceptionResponse> handleProductNotFoundException(ProductNotFoundExceptions ex,
-                                                                                  WebRequest request) {
+    @ExceptionHandler(BrandNotFoundExceptions.class)
+    public final ResponseEntity<ExceptionResponse> handleBrandNotFoundException(BrandNotFoundExceptions ex,
+                                                                                WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);

@@ -12,7 +12,6 @@ public class ProductMapper {
         productDTO.setBrandId(product.getBrandId());
         productDTO.setCreateUserId(product.getCreateUserId());
         productDTO.setProductName(product.getProductName());
-        productDTO.setProductType(product.getProductType());
         productDTO.setUpdateUserId(product.getUpdateUserId());
         productDTO.setId(product.getId());
         return productDTO;
@@ -24,7 +23,6 @@ public class ProductMapper {
 
         product.setBrandId(productDTO.getBrandId());
         product.setCategoryId(productDTO.getCategoryId());
-        product.setProductType(productDTO.getProductType());
         product.setProductName(productDTO.getProductName());
         product.setUpdateUserId(productDTO.getUpdateUserId());
         product.setCreateUserId(productDTO.getCreateUserId());

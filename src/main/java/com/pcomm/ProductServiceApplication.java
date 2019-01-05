@@ -16,9 +16,16 @@ import static springfox.documentation.builders.PathSelectors.any;
 public class ProductServiceApplication {
 
     @Bean
-    public Docket api(){
+    public Docket apiProduct(){
         return new Docket(DocumentationType.SWAGGER_2).groupName("product").select()
                 .apis(RequestHandlerSelectors.basePackage("com.pcomm.product"))
+                .paths(any()).build().apiInfo(ApiInfo.DEFAULT);
+    }
+
+    @Bean
+    public Docket apiBrand(){
+        return new Docket(DocumentationType.SWAGGER_2).groupName("brand").select()
+                .apis(RequestHandlerSelectors.basePackage("com.pcomm.brand"))
                 .paths(any()).build().apiInfo(ApiInfo.DEFAULT);
     }
 

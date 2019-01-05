@@ -58,18 +58,18 @@ public class ProductControllerTest {
     @Before
     public void setup() {
 
+        productDTO.setId(1l);
         productDTO.setBrandId(1l);
         productDTO.setCategoryId(2l);
         productDTO.setCreateUserId("testuser");
         productDTO.setProductName("6s");
-        productDTO.setProductType("phone");
         productDTO.setUpdateUserId("testuser");
 
+        product.setId(1l);
         product.setBrandId(1l);
         product.setCategoryId(2l);
         product.setCreateUserId("testuser");
         product.setProductName("6s");
-        product.setProductType("phone");
         product.setUpdateUserId("testuser");
     }
 
@@ -89,6 +89,20 @@ public class ProductControllerTest {
 
     }
 
+
+    @Test
+    public void testFindById() throws Exception {
+
+        given(productServiceMock.findEntityById(anyLong())).willReturn(productDTO);
+
+        mockMvc.perform(get(url + "/read/{productId}", 1l)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.productName", is("6s")));
+
+
+    }
+
     @Test
     public void testUpdateProductShouldSuccess() throws Exception {
 
@@ -103,6 +117,19 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void testFindAll() throws Exception {
+        List<ProductDTO> products = Arrays.asList(productDTO);
+
+        given(productServiceMock.allProducts()).willReturn(products);
+
+        mockMvc.perform(get(url + "/list" )
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].productName", is(product.getProductName())));
+    }
+
+    @Test
     public void testFindAllProductsByProductName() throws Exception {
         List<ProductDTO> products = Arrays.asList(productDTO);
 
@@ -113,18 +140,6 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].productName", is(product.getProductName())));
-    }
-    @Test
-    public void testFindAllProductsByProductType() throws Exception {
-        List<ProductDTO> products = Arrays.asList(productDTO);
-
-        given(productServiceMock.findByProductTypeContainingIgnoreCase(anyString())).willReturn(products);
-
-        mockMvc.perform(get(url + "/productType/{productType}", "phone")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].productType", is(product.getProductType())));
     }
 
 

@@ -1,4 +1,4 @@
-package com.pcomm.product.constant;
+package com.pcomm.constant;
 
 public class ProductConstant {
 
