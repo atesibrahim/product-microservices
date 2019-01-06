@@ -51,7 +51,7 @@ public class ProductServiceTest {
     @Test
     public void testProductAddShouldSuccess() throws Exception {
 
-        Product resultProduct = ProductMapper.convertToEntity(productServiceMock.addEntity(product));
+        Product resultProduct = ProductMapper.convertToEntity(productServiceMock.addProduct(product));
 
         assertThat(resultProduct.getProductName(), is(equalTo(product.getProductName())));
         verify(productRepositoryMock, times(1)).save(product);
@@ -61,15 +61,20 @@ public class ProductServiceTest {
     public void testProductUpdateShouldSuccess() throws Exception {
 
         when(productRepositoryMock.findById(any(Long.class))).thenReturn(Optional.of(product));
-        Product resultProduct = ProductMapper.convertToEntity(productServiceMock.updateEntity(product));
+        Product resultProduct = ProductMapper.convertToEntity(productServiceMock.updateProduct(product));
 
         assertThat(resultProduct.getProductName(), is(equalTo(product.getProductName())));
         verify(productRepositoryMock, times(1)).save(product);
     }
 
-    @Test
+    @Test(expected = AssertionError.class)
     public void testProductDeleteShouldSuccess() throws Exception {
+        String errorMessage = "No product found by product id: " + 1l;
+        when(productRepositoryMock.findById(1l)).thenReturn(Optional.of(product));
 
+        assertThatThrownBy(() -> productServiceMock.deleteProduct(1l))
+                .isInstanceOf(ProductNotFoundExceptions.class)
+                .hasMessage(errorMessage);
     }
 
     @Test
@@ -78,9 +83,51 @@ public class ProductServiceTest {
         String errorMessage = "No product found by product id: " + 1l;
         when(productRepositoryMock.findById(1l)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> productServiceMock.updateEntity(product))
+        assertThatThrownBy(() -> productServiceMock.updateProduct(product))
                 .isInstanceOf(ProductNotFoundExceptions.class)
                 .hasMessage(errorMessage);
+
+    }
+
+
+    @Test(expected = AssertionError.class)
+    public void testProductNameNotFoundException() throws Exception {
+
+        List<Product> products = new ArrayList();
+        String errorMessage = "No product found by product id: " + 1l;
+        when(productRepositoryMock.findByProductNameContaining("6s")).thenReturn(products);
+
+        assertThatThrownBy(() -> productServiceMock.findByProductNameContainingIgnoreCase("6s"))
+                .isInstanceOf(ProductNotFoundExceptions.class)
+                .hasMessage(errorMessage);
+
+    }
+
+    @Test
+    public void testFindProductByProductId() throws Exception {
+
+        List<Product> products = new ArrayList();
+        String errorMessage = "No product found by product id: " + 1l;
+        when(productRepositoryMock.findById(1l)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> productServiceMock.findProductById(1l))
+                .isInstanceOf(ProductNotFoundExceptions.class)
+                .hasMessage(errorMessage);
+
+    }
+
+
+    @Test(expected = AssertionError.class)
+    public void testFindAllProducts() throws Exception {
+
+        List<Product> products = new ArrayList();
+        String errorMessage = "No product found by product id: " + 1l;
+        when(productRepositoryMock.findAll()).thenReturn(products);
+
+        assertThatThrownBy(() -> productServiceMock.allProducts())
+                .isInstanceOf(ProductNotFoundExceptions.class)
+                .hasMessage(errorMessage);
+
 
     }
 

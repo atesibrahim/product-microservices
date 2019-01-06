@@ -10,15 +10,15 @@ public interface ProductService {
 
     public List<ProductDTO> findByProductNameContainingIgnoreCase(String productName);
 
-    public ProductDTO findEntityById(Long id);
+    public ProductDTO findProductById(Long id);
 
     public List<ProductDTO> allProducts();
 
-    public void deleteEntity(Long id);
+    public void deleteProduct(Long id);
 
-    public ProductDTO addEntity(Product product);
+    public ProductDTO addProduct(Product product);
 
-    public ProductDTO updateEntity(Product product);
+    public ProductDTO updateProduct(Product product);
 
 
 

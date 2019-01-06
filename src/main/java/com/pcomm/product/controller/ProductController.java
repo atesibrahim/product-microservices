@@ -55,11 +55,9 @@ public class ProductController {
     @GetMapping("read/{productId}")
     public ResponseEntity<ProductDTO> findProduct(@PathVariable("productId") Long id){
         logger.info("product controller / product-service findProduct read will called for this ProductId ={0} ", id);
-        ProductDTO productDTO = productService.findEntityById(id);
+        ProductDTO productDTO = productService.findProductById(id);
         logger.info("product controller / product-service read called  for this ProductId ={0} ", id);
-        if(productDTO==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
@@ -67,11 +65,9 @@ public class ProductController {
     public ResponseEntity<ProductDTO> add(@Valid @RequestBody ProductDTO productDTO){
         logger.info("product controller / product-service add method will called={0} ", productDTO);
         Product productM = ProductMapper.convertToEntity(productDTO);
-        ProductDTO productDTO_Out = productService.addEntity(productM);
+        ProductDTO productDTO_Out = productService.addProduct(productM);
         logger.info("product controller / product-service add method called and returned -> = {0}", productDTO_Out);
-        if(productDTO_Out==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
         return new ResponseEntity<>(productDTO_Out, HttpStatus.OK);
     }
 
@@ -81,24 +77,19 @@ public class ProductController {
         logger.info("product controller / product-service update method will called={0}",productDTO);
         Product productM = ProductMapper.convertToEntity(productDTO);
         productM.setId(productDTO.getId());
-        ProductDTO productDTO_Out = productService.updateEntity(productM);
+        ProductDTO productDTO_Out = productService.updateProduct(productM);
         logger.info("product controller / product-service add method called={0} ", productDTO_Out);
-        if(productDTO_Out==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
         return new ResponseEntity<>(productDTO_Out, HttpStatus.OK);
     }
-
 
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<ProductDTO> deleteById(@PathVariable("productId") Long id){
         logger.info("product controller / product-service delete method will called for productId:{0} " , id);
-        productService.deleteEntity(id);
+        productService.deleteProduct(id);
         logger.info("product controller / product-service delete method called for productId:{0} " , id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 
 }

@@ -32,23 +32,13 @@ public class Brand implements Serializable {
     @Column(name="update_user_id")
     protected String updateUserId;
 
-    @Column(name="create_instance_id")
-    @CreationTimestamp
-    protected LocalDateTime createInstanceId;
 
     @Column(name="update_instance_id")
     @UpdateTimestamp
     protected LocalDateTime updateInstanceId;
 
-    @Override
-    public String toString() {
-        return "Brand{" +
-                "id=" + id +
-                ", brandName='" + brandName + '\'' +
-                ", createUserId='" + createUserId + '\'' +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", createInstanceId=" + createInstanceId +
-                ", updateInstanceId=" + updateInstanceId +
-                '}';
-    }
+    @Column(name="create_instance_id")
+    @CreationTimestamp
+    protected LocalDateTime createInstanceId;
+
 }

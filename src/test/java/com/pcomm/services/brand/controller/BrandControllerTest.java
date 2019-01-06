@@ -69,7 +69,7 @@ public class BrandControllerTest {
     @Test
     public void testAddBrandShouldSuccess() throws Exception {
 
-        when(brandServiceMock.addEntity(refEq(brand))).thenReturn(brandDTO);
+        when(brandServiceMock.addBrand(refEq(brand))).thenReturn(brandDTO);
         mockMvc.perform(post(url + "/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(brandDTO)))
@@ -77,7 +77,7 @@ public class BrandControllerTest {
                 .andExpect(jsonPath("$.brandName", is("Apple")))
                 .andExpect(jsonPath("$.createUserId", is("testuser")));
 
-        verify(brandServiceMock, times(1)).addEntity(refEq(brand));
+        verify(brandServiceMock, times(1)).addBrand(refEq(brand));
 
 
     }
@@ -85,13 +85,13 @@ public class BrandControllerTest {
     @Test
     public void testUpdateBrandShouldSuccess() throws Exception {
 
-        when(brandServiceMock.updateEntity(refEq(brand))).thenReturn(brandDTO);
+        when(brandServiceMock.updateBrand(refEq(brand))).thenReturn(brandDTO);
         mockMvc.perform(put(url + "/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(brandDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.createUserId", is("testuser")));
-        verify(brandServiceMock, times(1)).updateEntity(refEq(brand));
+        verify(brandServiceMock, times(1)).updateBrand(refEq(brand));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class BrandControllerTest {
     public void testFindBrandsByBrandId() throws Exception {
         List<BrandDTO> brandDTOS = Arrays.asList(brandDTO);
 
-        given(brandServiceMock.findEntityById(anyLong())).willReturn(brandDTO);
+        given(brandServiceMock.findBrandById(anyLong())).willReturn(brandDTO);
 
         mockMvc.perform(get(url + "/read/{brandId}", 1l)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -138,13 +138,13 @@ public class BrandControllerTest {
     @Test
     public void testDeleteBrandShouldSuccess() throws Exception {
 
-        doNothing().when(brandServiceMock).deleteEntity(Long.valueOf(1));
+        doNothing().when(brandServiceMock).deleteBrand(Long.valueOf(1));
 
         mockMvc.perform(delete(url + "/delete/{brandId}", Long.valueOf(1l))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(brandServiceMock, times(1)).deleteEntity(Long.valueOf(1l));
+        verify(brandServiceMock, times(1)).deleteBrand(Long.valueOf(1l));
 
     }
 }

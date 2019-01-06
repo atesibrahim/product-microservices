@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.InvalidParameterException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 public class BrandServiceImpl implements BrandService {
 
-    private static final Logger logger = LoggerFactory.getLogger(BrandService.class);
+    private Logger logger = LoggerFactory.getLogger(BrandService.class);
 
     @Autowired
     BrandRepository brandRepository;
@@ -36,9 +35,14 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<BrandDTO> findByBrandNameContaining(String brandName) {
 
-        logger.info("brand service impl / brand-service findBrandNameContaining method will called for productName:{0} " , brandName);
 
-        return brandRepository.findByBrandNameContaining(brandName).parallelStream().map(brand -> BrandMapper.convertToDTO(brand)).collect(Collectors.toList());
+      return brandRepository
+              .findByBrandNameContaining(brandName)
+              .parallelStream()
+              .map(brand -> BrandMapper.convertToDTO(brand))
+              .collect(Collectors.toList());
+
+
 
     }
 
@@ -46,66 +50,41 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<BrandDTO> allBrands() {
 
-
-        logger.info("brand service impl / brand-service allBrands method will called for brandName:{0} " );
-        List<Brand> brands = Lists.newArrayList(brandRepository.findAll());
-        return brands.parallelStream().map(brand -> BrandMapper.convertToDTO(brand)).collect(Collectors.toList());
-
-
+        return Lists.newArrayList(brandRepository.findAll()).parallelStream().map(brand -> BrandMapper.convertToDTO(brand)).collect(Collectors.toList());
     }
 
     @Override
-    public BrandDTO findEntityById(Long id) {
-        if(id!=null) {
-            logger.info("brand service impl / brand-service findEntityById method will called for id:{0} ", id );
-            Optional<Brand> brand = brandRepository.findById(id);
+    public BrandDTO findBrandById(Long id) {
 
-            checkBrand(brand, id);
+        BrandDTO brandDTO;
 
-            BrandDTO brandDTO = BrandMapper.convertToDTO(brandRepository.findById(id).get());
+        Optional<Brand> brandOut = brandRepository.findById(id);
 
-            logger.info("brand service impl / brand-service findEntityById method called and found product ", brandDTO );
 
-            return brandDTO;
+        if (brandOut.isPresent()) {
+
+            brandDTO = BrandMapper.convertToDTO(brandOut.get());
         }
-        else
-        {
-            throw new BrandNotFoundExceptions(id);
+        else brandDTO=null;
 
-        }
+        return brandDTO;
     }
 
     @Override
-    public void deleteEntity(Long id) {
-
-        if(id!=null) {
-            logger.info("brand service impl / brand-service deleteEntity method will called and found product ", id );
-
-            Optional<Brand> brand = brandRepository.findById(id);
-
-            checkBrand(brand, id);
-
-            Brand _brand = brandRepository.findById(id).get();
+    public void deleteBrand(Long id) {
 
 
-            brandRepository.delete(_brand);
-            logger.info("brand service impl / brand-service deleteEntity method called and deleted ", id );
-        }
-        else{
-            throw new BrandNotFoundExceptions(id);
+        Optional<Brand> brandO = brandRepository.findById(id);
+
+        if(brandO.isPresent()){
+            brandRepository.delete(brandO.get());
         }
 
     }
 
 
     @Override
-    public BrandDTO addEntity(Brand brand) {
-
-        if((brand.getBrandName()==null) || (brand.getBrandName()==""))
-        {
-            throw new InvalidParameterException("Brand Name could not be empty!");
-
-        }
+    public BrandDTO addBrand(Brand brand) {
 
         brand.setCreateInstanceId(getTimeStamp());
 
@@ -113,19 +92,12 @@ public class BrandServiceImpl implements BrandService {
 
         logger.info("brand service impl / brand-service addEntity method will called and found product " );
 
-        BrandDTO brandDTO = BrandMapper.convertToDTO(brandRepository.save(brand));
-
-        logger.info("product service impl / product-service addEntity method called and found product " );
-
-
-        return brandDTO;
-
-
+        return BrandMapper.convertToDTO(brandRepository.save(brand));
 
     }
 
     @Override
-    public BrandDTO updateEntity(Brand brand) {
+    public BrandDTO updateBrand(Brand brand) {
 
         logger.info("brand service impl / brand-service updateEntity method will called and found product " );
         Optional<Brand>  brandOptional = brandRepository.findById(brand.getId());
@@ -134,12 +106,7 @@ public class BrandServiceImpl implements BrandService {
         brand.setUpdateInstanceId(getTimeStamp());
         brand.setCreateInstanceId(brandOptional.get().getCreateInstanceId());
 
-        BrandDTO brandDTO = BrandMapper.convertToDTO(brandRepository.save(brand));
-
-        logger.info("brand service impl / brand-service addEntity method called and found product " );
-
-
-        return brandDTO;
+        return BrandMapper.convertToDTO(brandRepository.save(brand));
 
     }
 

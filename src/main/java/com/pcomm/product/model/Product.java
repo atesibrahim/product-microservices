@@ -47,16 +47,4 @@ public class Product implements Serializable {
     @UpdateTimestamp
     protected LocalDateTime updateInstanceId;
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productName='" + productName + '\'' +
-                ", categoryId=" + categoryId +
-                ", brandId=" + brandId +
-                ", createUserId='" + createUserId + '\'' +
-                ", updateUserId='" + updateUserId + '\'' +
-                ", createInstanceId=" + createInstanceId +
-                ", updateInstanceId=" + updateInstanceId +
-                '}';
-    }
 }

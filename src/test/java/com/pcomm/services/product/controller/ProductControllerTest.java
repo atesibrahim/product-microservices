@@ -76,7 +76,7 @@ public class ProductControllerTest {
     @Test
     public void testAddProductShouldSuccess() throws Exception {
 
-        when(productServiceMock.addEntity(refEq(product))).thenReturn(productDTO);
+        when(productServiceMock.addProduct(refEq(product))).thenReturn(productDTO);
         mockMvc.perform(post(url + "/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(productDTO)))
@@ -84,7 +84,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.brandId", is(1)))
                 .andExpect(jsonPath("$.createUserId", is("testuser")));
 
-        verify(productServiceMock, times(1)).addEntity(refEq(product));
+        verify(productServiceMock, times(1)).addProduct(refEq(product));
 
 
     }
@@ -93,7 +93,7 @@ public class ProductControllerTest {
     @Test
     public void testFindById() throws Exception {
 
-        given(productServiceMock.findEntityById(anyLong())).willReturn(productDTO);
+        given(productServiceMock.findProductById(anyLong())).willReturn(productDTO);
 
         mockMvc.perform(get(url + "/read/{productId}", 1l)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -106,14 +106,14 @@ public class ProductControllerTest {
     @Test
     public void testUpdateProductShouldSuccess() throws Exception {
 
-        when(productServiceMock.updateEntity(refEq(product))).thenReturn(productDTO);
+        when(productServiceMock.updateProduct(refEq(product))).thenReturn(productDTO);
         mockMvc.perform(put(url + "/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(productDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.brandId", is(1)))
                 .andExpect(jsonPath("$.createUserId", is("testuser")));
-        verify(productServiceMock, times(1)).updateEntity(refEq(product));
+        verify(productServiceMock, times(1)).updateProduct(refEq(product));
     }
 
     @Test
@@ -146,13 +146,13 @@ public class ProductControllerTest {
     @Test
     public void testDeleteProductShouldSuccess() throws Exception {
 
-        doNothing().when(productServiceMock).deleteEntity(Long.valueOf(1));
+        doNothing().when(productServiceMock).deleteProduct(Long.valueOf(1));
 
         mockMvc.perform(delete(url + "/delete/{productId}", Long.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(productServiceMock, times(1)).deleteEntity(Long.valueOf(1));
+        verify(productServiceMock, times(1)).deleteProduct(Long.valueOf(1));
 
     }
 }

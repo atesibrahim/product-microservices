@@ -23,9 +23,4 @@ public class BrandDTO {
     public BrandDTO() {
     }
 
-    public BrandDTO(String brandName, String createUserId, String updateUserId) {
-        this.brandName = brandName;
-        this.createUserId = createUserId;
-        this.updateUserId = updateUserId;
-    }
 }

@@ -30,11 +30,4 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(String productName, Long categoryId, Long brandId, String createUserId, String updateUserId) {
-        this.productName = productName;
-        this.categoryId = categoryId;
-        this.brandId = brandId;
-        this.createUserId = createUserId;
-        this.updateUserId = updateUserId;
-    }
 }

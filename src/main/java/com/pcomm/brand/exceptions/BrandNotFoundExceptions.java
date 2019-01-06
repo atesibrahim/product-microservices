@@ -13,7 +13,4 @@ public class BrandNotFoundExceptions extends RuntimeException{
         super("No brand found by brand id: " + brandId);
     }
 
-    public BrandNotFoundExceptions(String brandName) {
-        super("No brand found by brand name: " + brandName);
-    }
 }

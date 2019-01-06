@@ -40,9 +40,9 @@ public class BrandController {
     @GetMapping("brandName/{brandName}")
     public ResponseEntity<List<BrandDTO>> listByBrandName(@PathVariable("brandName") String brandName) {
 
-        logger.info("brand controller / product-service list by brandName method will  invoked:{0}" , brandName);
+        logger.info("brand controller / product-service list by brandName method will  invoked:{0}" + brandName);
         List<BrandDTO> brandDTOS = brandService.findByBrandNameContaining(brandName);
-        logger.info("brand controller / brand-service list by brandName found and returned list size:{0} " ,brandDTOS.size());
+        logger.info("brand controller / brand-service list by brandName found and returned list size:{0} " +brandDTOS.size());
 
         return new ResponseEntity<>(brandDTOS, HttpStatus.OK);
 
@@ -50,48 +50,42 @@ public class BrandController {
     }
 
     @GetMapping("read/{brandId}")
-    public ResponseEntity<BrandDTO> findBrand(@PathVariable("brandId") Long id){
-        logger.info("brand controller / brand-service findBrand read will called for this brandId  ={0} ", id);
-        BrandDTO brandDTO = brandService.findEntityById(id);
-        logger.info("brand controller / brand-service read called  for this brandId ={0} ", id);
-        if(brandDTO==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<BrandDTO> findBrandById(@PathVariable("brandId") Long id){
+        logger.info("brand controller / brand-service findBrand read will called for this brandId  ={0} "+ id);
+        BrandDTO brandDTO = brandService.findBrandById(id);
+        logger.info("brand controller / brand-service read called  for this brandId ={0} "+ id);
+
         return new ResponseEntity<>(brandDTO, HttpStatus.OK);
     }
 
     @PostMapping("/add")
     public ResponseEntity<BrandDTO> add(@Valid @RequestBody BrandDTO brandDTO){
-        logger.info("brand controller / brand-service add method will called={0} ", brandDTO);
+        logger.info("brand controller / brand-service add method will called={0} "+brandDTO);
         Brand brandEntity = BrandMapper.convertToEntity(brandDTO);
-        BrandDTO brandDTO_Out = brandService.addEntity(brandEntity);
-        logger.info("brand controller / brand-service add method called and returned -> = {0}", brandDTO_Out);
-        if(brandDTO_Out==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        BrandDTO brandDTO_Out = brandService.addBrand(brandEntity);
+        logger.info("brand controller / brand-service add method called and returned -> = {0}"+ brandDTO_Out);
+
         return new ResponseEntity<>(brandDTO_Out, HttpStatus.OK);
     }
 
     @PutMapping("/update")
     @ResponseBody
     public ResponseEntity<BrandDTO> update(@Valid @RequestBody BrandDTO brandDTO){
-        logger.info("brand controller / brand-service update method will called={0}",brandDTO);
+        logger.info("brand controller / brand-service update method will called={0}"+brandDTO);
         Brand brandEntity = BrandMapper.convertToEntity(brandDTO);
         brandEntity.setId(brandDTO.getId());
-        BrandDTO brandDTO_Out = brandService.updateEntity(brandEntity);
-        logger.info("brand controller / brand-service add method called={0} ", brandDTO_Out);
-        if(brandDTO_Out==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        BrandDTO brandDTO_Out = brandService.updateBrand(brandEntity);
+        logger.info("brand controller / brand-service add method called={0} "+ brandDTO_Out);
+
         return new ResponseEntity<>(brandDTO_Out, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/delete/{brandId}")
     public ResponseEntity<BrandDTO> deleteById(@PathVariable("brandId") Long id){
-        logger.info("brand controller / brand-service delete method will called for brandId:{0} " , id);
-        brandService.deleteEntity(id);
-        logger.info("brand controller / product-service delete method called for brandId:{0} " , id);
+        logger.info("brand controller / brand-service delete method will called for brandId:{0} " +id);
+        brandService.deleteBrand(id);
+        logger.info("brand controller / product-service delete method called for brandId:{0} " + id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

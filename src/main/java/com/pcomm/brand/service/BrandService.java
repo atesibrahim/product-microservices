@@ -12,15 +12,15 @@ public interface BrandService {
 
     public List<BrandDTO> findByBrandNameContaining(String brandName);
 
-    public BrandDTO findEntityById(Long id);
+    public BrandDTO findBrandById(Long id);
 
     public List<BrandDTO> allBrands();
 
-    public void deleteEntity(Long id);
+    public void deleteBrand(Long id);
 
-    public BrandDTO addEntity(Brand brand);
+    public BrandDTO addBrand(Brand brand);
 
-    public BrandDTO updateEntity(Brand brand);
+    public BrandDTO updateBrand(Brand brand);
 
 
 

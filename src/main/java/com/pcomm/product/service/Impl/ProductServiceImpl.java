@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.InvalidParameterException;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductService.class
+    private Logger logger = LoggerFactory.getLogger(ProductService.class
             .getName());
 
     @Autowired
@@ -37,9 +37,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> findByProductNameContainingIgnoreCase(String productName) {
 
-        logger.info("product service impl / product-service findByProductNameContainingIgnoreCase method will called for productName:{0} " , productName);
-
-        return productRepository.findByProductNameContaining(productName).parallelStream().map(pduct -> ProductMapper.convertToDTO(pduct)).collect(Collectors.toList());
+        return productRepository
+                .findByProductNameContaining(productName)
+                .parallelStream()
+                .map(productIn -> ProductMapper.convertToDTO(productIn))
+                .collect(Collectors.toList());
 
     }
 
@@ -47,66 +49,36 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> allProducts() {
 
+        return Lists.newArrayList(productRepository.findAll())
+                .parallelStream()
+                .map(productIn -> ProductMapper.convertToDTO(productIn))
+                .collect(Collectors.toList());
+    }
 
-        logger.info("product service impl / product-service allProducts method will called for productName:{0} " );
-        List<Product> products = Lists.newArrayList(productRepository.findAll());
-        return products.parallelStream().map(pduct -> ProductMapper.convertToDTO(pduct)).collect(Collectors.toList());
+    @Override
+    public ProductDTO findProductById(Long id) {
 
+            checkProduct(productRepository.findById(id), id);
+
+            return ProductMapper.convertToDTO(productRepository.findById(id).get());
 
     }
 
     @Override
-    public ProductDTO findEntityById(Long id) {
-        if(id!=null) {
-            logger.info("product service impl / product-service findEntityById method will called for id:{0} ", id );
-            Optional<Product> pduct = productRepository.findById(id);
+    public void deleteProduct(Long id) {
 
-            checkProduct(pduct, id);
-
-            ProductDTO productDTO =ProductMapper.convertToDTO(productRepository.findById(id).get());
-
-            logger.info("product service impl / product-service findEntityById method called and found product ", productDTO );
-
-            return productDTO;
-        }
-        else
-        {
-            throw new ProductNotFoundExceptions(id);
-
-        }
-    }
-
-    @Override
-    public void deleteEntity(Long id) {
-
-        if(id!=null) {
-            logger.info("product service impl / product-service deleteEntity method will called and found product ", id );
-
-            Optional<Product> pduct = productRepository.findById(id);
-
-            checkProduct(pduct, id);
+            checkProduct(productRepository.findById(id), id);
 
             Product product = productRepository.findById(id).get();
 
-
             productRepository.delete(product);
-            logger.info("product service impl / product-service deleteEntity method called and deleted ", id );
-        }
-        else{
-            throw new ProductNotFoundExceptions(id);
-        }
 
     }
 
 
     @Override
-    public ProductDTO addEntity(Product product) {
+    public ProductDTO addProduct(Product product) {
 
-        if((product.getProductName()==null) || (product.getProductName()==""))
-        {
-            throw new InvalidParameterException("Product Name could not be empty!");
-
-        }
 
         product.setCreateInstanceId(getTimeStamp());
 
@@ -114,19 +86,12 @@ public class ProductServiceImpl implements ProductService {
 
         logger.info("product service impl / product-service addEntity method will called and found product " );
 
-        ProductDTO productDTO =ProductMapper.convertToDTO(productRepository.save(product));
-
-        logger.info("product service impl / product-service addEntity method called and found product " );
-
-
-        return productDTO;
-
-
+        return ProductMapper.convertToDTO(productRepository.save(product));
 
     }
 
     @Override
-    public ProductDTO updateEntity(Product product) {
+    public ProductDTO updateProduct(Product product) {
 
         logger.info("product service impl / product-service updateEntity method will called and found product " );
         Optional<Product>  productOpt = productRepository.findById(product.getId());
@@ -135,17 +100,11 @@ public class ProductServiceImpl implements ProductService {
         product.setUpdateInstanceId(getTimeStamp());
         product.setCreateInstanceId(productOpt.get().getCreateInstanceId());
 
-        ProductDTO productDTO =ProductMapper.convertToDTO(productRepository.save(product));
-
-        logger.info("product service impl / product-service addEntity method called and found product " );
-
-
-        return productDTO;
+        return ProductMapper.convertToDTO(productRepository.save(product));
 
     }
 
     public static LocalDateTime getTimeStamp(){
-
 
         return LocalDateTime.now();
 
