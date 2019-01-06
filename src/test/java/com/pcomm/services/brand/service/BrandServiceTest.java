@@ -111,16 +111,14 @@ public class BrandServiceTest {
     }
 
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testFindAllBrands() throws Exception {
 
         List<Brand> brands = new ArrayList();
         String errorMessage = "No brand found by brand id: " + 1l;
         when(brandRepositoryMock.findAll()).thenReturn(brands);
 
-        assertThatThrownBy(() -> brandServiceMock.allBrands())
-                .isInstanceOf(BrandNotFoundExceptions.class)
-                .hasMessage(errorMessage);
+        brandServiceMock.allBrands();
 
 
     }

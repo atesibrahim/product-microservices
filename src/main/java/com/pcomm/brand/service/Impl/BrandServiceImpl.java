@@ -86,9 +86,9 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandDTO addBrand(Brand brand) {
 
-        brand.setCreateInstanceId(getTimeStamp());
+        brand.setCreateInstanceId(LocalDateTime.now());
 
-        brand.setUpdateInstanceId(getTimeStamp());
+        brand.setUpdateInstanceId(LocalDateTime.now());
 
         logger.info("brand service impl / brand-service addEntity method will called and found product " );
 
@@ -103,19 +103,13 @@ public class BrandServiceImpl implements BrandService {
         Optional<Brand>  brandOptional = brandRepository.findById(brand.getId());
         checkBrand(brandOptional, brand.getId());
 
-        brand.setUpdateInstanceId(getTimeStamp());
+        brand.setUpdateInstanceId(LocalDateTime.now());
         brand.setCreateInstanceId(brandOptional.get().getCreateInstanceId());
 
         return BrandMapper.convertToDTO(brandRepository.save(brand));
 
     }
 
-    public static LocalDateTime getTimeStamp(){
-
-
-        return LocalDateTime.now();
-
-    }
 
     private void checkBrand(Optional<Brand> brand, Long brandId){
         if(!brand.isPresent()){

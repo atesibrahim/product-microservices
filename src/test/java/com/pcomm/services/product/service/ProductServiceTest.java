@@ -90,16 +90,14 @@ public class ProductServiceTest {
     }
 
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testProductNameNotFoundException() throws Exception {
 
         List<Product> products = new ArrayList();
         String errorMessage = "No product found by product id: " + 1l;
         when(productRepositoryMock.findByProductNameContaining("6s")).thenReturn(products);
 
-        assertThatThrownBy(() -> productServiceMock.findByProductNameContainingIgnoreCase("6s"))
-                .isInstanceOf(ProductNotFoundExceptions.class)
-                .hasMessage(errorMessage);
+         productServiceMock.findByProductNameContainingIgnoreCase("6s");
 
     }
 
@@ -117,16 +115,14 @@ public class ProductServiceTest {
     }
 
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testFindAllProducts() throws Exception {
 
         List<Product> products = new ArrayList();
         String errorMessage = "No product found by product id: " + 1l;
         when(productRepositoryMock.findAll()).thenReturn(products);
 
-        assertThatThrownBy(() -> productServiceMock.allProducts())
-                .isInstanceOf(ProductNotFoundExceptions.class)
-                .hasMessage(errorMessage);
+        productServiceMock.allProducts();
 
 
     }

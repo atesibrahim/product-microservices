@@ -80,9 +80,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO addProduct(Product product) {
 
 
-        product.setCreateInstanceId(getTimeStamp());
+        product.setCreateInstanceId(LocalDateTime.now());
 
-        product.setUpdateInstanceId(getTimeStamp());
+        product.setUpdateInstanceId(LocalDateTime.now());
 
         logger.info("product service impl / product-service addEntity method will called and found product " );
 
@@ -97,16 +97,10 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product>  productOpt = productRepository.findById(product.getId());
         checkProduct(productOpt, product.getId());
 
-        product.setUpdateInstanceId(getTimeStamp());
+        product.setUpdateInstanceId(LocalDateTime.now());
         product.setCreateInstanceId(productOpt.get().getCreateInstanceId());
 
         return ProductMapper.convertToDTO(productRepository.save(product));
-
-    }
-
-    public static LocalDateTime getTimeStamp(){
-
-        return LocalDateTime.now();
 
     }
 
