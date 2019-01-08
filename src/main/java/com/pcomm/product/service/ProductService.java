@@ -8,20 +8,17 @@ import java.util.List;
 public interface ProductService {
 
 
-    public List<ProductDTO> findByProductTypeContainingIgnoreCase(String productType);
-
     public List<ProductDTO> findByProductNameContainingIgnoreCase(String productName);
 
-    public ProductDTO findEntityById(Long id);
+    public ProductDTO findProductById(Long id);
 
     public List<ProductDTO> allProducts();
 
+    public void deleteProduct(Long id);
 
-    public void deleteEntity(Long id);
+    public ProductDTO addProduct(Product product);
 
-    public ProductDTO addEntity(Product product);
-
-    public ProductDTO updateEntity(Product product);
+    public ProductDTO updateProduct(Product product);
 
 
 

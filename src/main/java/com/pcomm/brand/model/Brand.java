@@ -1,21 +1,20 @@
-package com.pcomm.product.model;
+package com.pcomm.brand.model;
 
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "T_PRODUCT")
+@Table(name = "T_BRAND")
 @Getter
 @Setter
-public class Product implements Serializable {
+public class Brand implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,15 +22,9 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(name="product_name")
-    protected String productName;
+    @Column(name="brand_name")
+    protected String brandName;
 
-
-    @Column(name="product_category_id")
-    protected Long categoryId;
-
-    @Column(name="product_brand_id")
-    protected Long brandId;
 
     @Column(name="create_user_id")
     protected String createUserId;
@@ -39,12 +32,13 @@ public class Product implements Serializable {
     @Column(name="update_user_id")
     protected String updateUserId;
 
-    @Column(name="create_instance_id")
-    @CreationTimestamp
-    protected LocalDateTime createInstanceId;
 
     @Column(name="update_instance_id")
     @UpdateTimestamp
     protected LocalDateTime updateInstanceId;
+
+    @Column(name="create_instance_id")
+    @CreationTimestamp
+    protected LocalDateTime createInstanceId;
 
 }

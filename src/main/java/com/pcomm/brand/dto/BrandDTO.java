@@ -1,5 +1,4 @@
-package com.pcomm.product.dto;
-
+package com.pcomm.brand.dto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,26 +7,20 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class ProductDTO {
+public class BrandDTO {
 
 
     protected Long id;
 
     @NotNull
-    protected String productName;
+    protected String brandName;
 
-
-    @NotNull
-    protected Long categoryId;
-
-    @NotNull
-    protected Long brandId;
 
     protected String createUserId;
 
     protected String updateUserId;
 
-    public ProductDTO() {
+    public BrandDTO() {
     }
 
 }

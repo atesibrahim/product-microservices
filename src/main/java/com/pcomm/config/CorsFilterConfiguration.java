@@ -1,5 +1,4 @@
-package com.pcomm.product.config;
-import java.util.logging.Logger;
+package com.pcomm.config;
 
 
 import org.springframework.context.annotation.Bean;
@@ -9,7 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-public class ProductConfiguration {
+public class CorsFilterConfiguration {
 
     @Bean
     public CorsFilter corsFilter() {
