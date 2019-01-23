@@ -47,4 +47,6 @@ public class Product implements Serializable {
     @UpdateTimestamp
     protected LocalDateTime updateInstanceId;
 
+    public Product() {
+    }
 }

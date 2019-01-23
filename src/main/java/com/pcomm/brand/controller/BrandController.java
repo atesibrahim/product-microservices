@@ -51,7 +51,7 @@ public class BrandController {
 
     @GetMapping("read/{brandId}")
     public ResponseEntity<BrandDTO> findBrandById(@PathVariable("brandId") Long id){
-        logger.info("brand controller / brand-service findBrand read will called for this brandId  ={0} "+ id);
+            logger.info("brand controller / brand-service findBrand read will called for this brandId  ={0} "+ id);
         BrandDTO brandDTO = brandService.findBrandById(id);
         logger.info("brand controller / brand-service read called  for this brandId ={0} "+ id);
 
